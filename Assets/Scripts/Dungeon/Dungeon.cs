@@ -13,9 +13,11 @@ public class Dungeon : MonoBehaviour
     [SerializeField]
     private Room[] _roomPrefabs;
 
-    List<Room> _rooms = new List<Room>();
+    private List<Room> _rooms = new List<Room>();
 
     private Room _loadedRoom;
+
+    private List<Vector2Int> _roomPositions = new List<Vector2Int>();
 
     private void Awake()
     {
@@ -24,16 +26,27 @@ public class Dungeon : MonoBehaviour
 
     private void Start()
     {
-        GenerateDungeon();
+        GenerateRoomPositions();
     }
 
-    private void GenerateDungeon()
+    private void GenerateRoomPositions()
     {
-        for (int i = 0; i < _roomAmount; i++)
+        Vector2Int startPos = Vector2Int.zero;
+        _roomPositions.Add(startPos);
+
+        Vector2Int currentPos = startPos;
+        while (_roomPositions.Count < _roomAmount)
         {
-            _rooms.Add(_roomPrefabs[Random.Range(0, _roomPrefabs.Length)]);
+            Vector2Int randomDir = currentPos + Direction2D.GetRandomDirection();
+            if (_roomPositions.Contains(randomDir))
+            {
+                currentPos = _roomPositions.RandomItem();
+                continue;
+            }
+
+            currentPos = randomDir;
+            _roomPositions.Add(randomDir);
         }
-        LoadRoom();
     }
 
     private void LoadRoom()
