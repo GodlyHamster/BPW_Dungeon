@@ -102,7 +102,6 @@ public class Dungeon : MonoBehaviour
             _loadedRoom = null;
             _loadedRoomObject = null;
         }
-
         _loadedRoomObject = Instantiate(room.prefab);
         _loadedRoom = room;
     }
