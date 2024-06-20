@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using UnityEditor;
 using UnityEngine;
 
 public class Dungeon : MonoBehaviour
@@ -16,9 +14,10 @@ public class Dungeon : MonoBehaviour
     [SerializeField]
     private Room[] _roomPrefabs;
 
-    private List<Room> _rooms = new List<Room>();
+    private List<RoomData> _rooms = new List<RoomData>();
 
-    private Room _loadedRoom;
+    private RoomData _loadedRoom;
+    private GameObject _loadedRoomObject;
 
     private List<Vector2Int> _roomPositions = new List<Vector2Int>();
 
@@ -57,9 +56,8 @@ public class Dungeon : MonoBehaviour
 
     private void GenerateRooms()
     {
-        foreach (Room room in _rooms)
+        foreach (RoomData room in _rooms)
         {
-            print(room.roomPosition);
             if (_roomPositions.Contains(room.roomPosition + new Vector2Int(0, 1)))
             {
                 room.topDoor.linksToRoom = GetRoomFromPosition(room.roomPosition + new Vector2Int(0, 1));
@@ -88,35 +86,37 @@ public class Dungeon : MonoBehaviour
 
     private void AddRoom(Vector2Int pos)
     {
-        Room newRoom = new Room(pos);
-        newRoom.prefab = _roomPrefabs[0].prefab;
+        RoomData newRoom = new RoomData();
+        newRoom = _roomPrefabs[0].roomData.Clone();
+        newRoom.roomPosition = pos;
 
         _roomPositions.Add(pos);
         _rooms.Add(newRoom);
     }
 
-    public void LoadRoom(Room room)
+    public void LoadRoom(RoomData room)
     {
-        if (_loadedRoom != null)
+        if (_loadedRoomObject != null)
         {
-            Destroy(_loadedRoom.transform.gameObject);
+            Destroy(_loadedRoomObject);
             _loadedRoom = null;
+            _loadedRoomObject = null;
         }
 
-        Instantiate(room.prefab);
+        _loadedRoomObject = Instantiate(room.prefab);
         _loadedRoom = room;
     }
 
-    private Room GetRoomFromPosition(Vector2Int pos)
+    private RoomData GetRoomFromPosition(Vector2Int pos)
     {
-        foreach(Room room in _rooms)
+        foreach(RoomData room in _rooms)
         {
             if (room.roomPosition == pos)
             {
                 return room;
             }
         }
-        return null;
+        return new RoomData();
     }
 
     private void OnDrawGizmos()
