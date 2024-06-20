@@ -21,6 +21,12 @@ public class GridMovement
             _gridPosition = position;
             return new Vector3(position.x, position.y, 0);
         }
+        if (hit.collider.gameObject.tag == "Door")
+        {
+            _gridPosition = position;
+            Door door = hit.collider.gameObject.GetComponent<Door>();
+            Dungeon.instance.LoadRoom(door.linksToRoom);
+        }
         return new Vector3(_gridPosition.x, _gridPosition.y, 0);
     }
 }

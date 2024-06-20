@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20377f02baaa0704d8eeadd39063e9c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugDungeon: 1
   _roomAmount: 20
   _roomPrefabs:
   - {fileID: 7416578292998563056, guid: 2cadce9b0ddb91440a0dbf3a24d4ae7e, type: 3}
