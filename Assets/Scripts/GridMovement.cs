@@ -23,6 +23,7 @@ public class GridMovement
         }
         if (hit.collider.gameObject.tag == "Door")
         {
+            _gridPosition = new Vector2Int(-_gridPosition.x, -_gridPosition.y);
             Door door = hit.collider.gameObject.GetComponent<Door>();
             Dungeon.instance.LoadRoom(door.linksToRoom);
         }

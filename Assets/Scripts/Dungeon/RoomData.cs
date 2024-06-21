@@ -5,7 +5,7 @@ using UnityEngine;
 public class RoomData
 {
     public RoomData() { }
-    public RoomData(GameObject p, RoomType r, Vector2Int pos, Door top, Door right, Door down, Door left) { 
+    public RoomData(GameObject p, RoomType r, Vector2Int pos, bool top, bool right, bool down, bool left) { 
         prefab = p;
         roomType = r;
         roomPosition = pos;
@@ -19,12 +19,13 @@ public class RoomData
     public RoomType roomType;
 
     public Vector2Int roomPosition;
+    public Vector2Int roomSize;
 
     [Header("Doors")]
-    public Door topDoor;
-    public Door rigthDoor;
-    public Door bottomDoor;
-    public Door leftDoor;
+    public bool topDoor;
+    public bool rigthDoor;
+    public bool bottomDoor;
+    public bool leftDoor;
 
     public RoomData Clone()
     {

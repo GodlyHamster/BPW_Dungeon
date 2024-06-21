@@ -4,5 +4,5 @@ using UnityEngine;
 [Serializable]
 public class Door : MonoBehaviour
 {
-    public RoomData linksToRoom;
+    public Vector2Int linksToRoom;
 }

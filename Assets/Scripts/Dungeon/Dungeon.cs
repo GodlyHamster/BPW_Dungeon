@@ -12,7 +12,9 @@ public class Dungeon : MonoBehaviour
     private int _roomAmount;
 
     [SerializeField]
-    private Room[] _roomPrefabs;
+    private GameObject _roomPrefab;
+    [SerializeField]
+    private GameObject _doorPrefab;
 
     private List<RoomData> _rooms = new List<RoomData>();
 
@@ -59,51 +61,73 @@ public class Dungeon : MonoBehaviour
     {
         foreach (RoomData room in _rooms)
         {
-            print(room.roomPosition);
-            if (GetRoomFromPosition(room.roomPosition + new Vector2Int(0, 1)) != null)
+            Vector2Int roomPos = room.roomPosition;
+            if (GetRoomFromPosition(roomPos + new Vector2Int(0, 1)) != null)
             {
-                room.topDoor.linksToRoom = GetRoomFromPosition(room.roomPosition + new Vector2Int(0, 1));
+                GetRoomFromPosition(roomPos + new Vector2Int(0, 1)).bottomDoor = true;
             }
-            if (GetRoomFromPosition(room.roomPosition + new Vector2Int(1, 0)) != null)
+            if (GetRoomFromPosition(roomPos + new Vector2Int(1, 0)) != null)
             {
-                room.rigthDoor.linksToRoom = GetRoomFromPosition(room.roomPosition + new Vector2Int(1, 0));
+                GetRoomFromPosition(roomPos + new Vector2Int(1, 0)).leftDoor = true;
             }
-            if (GetRoomFromPosition(room.roomPosition + new Vector2Int(0, -1)) != null)
+            if (GetRoomFromPosition(roomPos + new Vector2Int(0, -1)) != null)
             {
-                room.bottomDoor.linksToRoom = GetRoomFromPosition(room.roomPosition + new Vector2Int(0, -1));
+                GetRoomFromPosition(roomPos + new Vector2Int(0, -1)).topDoor = true;
             }
-            if (GetRoomFromPosition(room.roomPosition + new Vector2Int(-1, 0)) != null)
+            if (GetRoomFromPosition(roomPos + new Vector2Int(-1, 0)) != null)
             {
-                room.leftDoor.linksToRoom = GetRoomFromPosition(room.roomPosition + new Vector2Int(-1, 0));
+                GetRoomFromPosition(roomPos + new Vector2Int(-1, 0)).rigthDoor = true;
             }
         }
 
-        LoadRoom(_rooms[0]);
+        LoadRoom(_roomPositions[0]);
     }
 
     private void AddRoom(Vector2Int pos)
     {
         RoomData roomData = new RoomData();
-        roomData = _roomPrefabs[0].roomData.Clone();
         roomData.roomPosition = pos;
 
         _roomPositions.Add(pos);
         _rooms.Add(roomData);
     }
 
-    public void LoadRoom(RoomData room)
+    public void LoadRoom(Vector2Int roomPos)
     {
         if (_loadedRoomObject != null)
         {
             Destroy(_loadedRoomObject);
-            _loadedRoom = null;
             _loadedRoomObject = null;
         }
-        _loadedRoomObject = Instantiate(room.prefab);
-        _loadedRoom = room;
+        //instantiate room and set correct room data
+        _loadedRoomObject = Instantiate(_roomPrefab);
+        _loadedRoom = GetRoomFromPosition(roomPos);
+        _loadedRoomObject.GetComponent<Room>().roomData = _loadedRoom;
+
+        //place doors
+        Vector2Int size = _loadedRoom.roomSize;
+        if (_loadedRoom.topDoor)
+        {
+            GameObject door = Instantiate(_doorPrefab, new Vector3(0, 6, 0), Quaternion.identity, _loadedRoomObject.transform);
+            door.GetComponent<Door>().linksToRoom = roomPos + new Vector2Int(0, 1);
+        }
+        if (_loadedRoom.bottomDoor) {
+            GameObject door = Instantiate(_doorPrefab, new Vector3(0, -6, 0), Quaternion.identity, _loadedRoomObject.transform);
+            door.GetComponent<Door>().linksToRoom = roomPos + new Vector2Int(0, -1);
+        }
+        if (_loadedRoom.rigthDoor)
+        {
+            GameObject door = Instantiate(_doorPrefab, new Vector3(8, 0, 0), Quaternion.identity, _loadedRoomObject.transform);
+            door.GetComponent<Door>().linksToRoom = roomPos + new Vector2Int(1, 0);
+        }
+        if (_loadedRoom.leftDoor)
+        {
+            GameObject door = Instantiate(_doorPrefab, new Vector3(-8, 0, 0), Quaternion.identity, _loadedRoomObject.transform);
+            door.GetComponent<Door>().linksToRoom = roomPos + new Vector2Int(-1, 0);
+        }
     }
 
-    private RoomData GetRoomFromPosition(Vector2Int pos)
+    public RoomData GetRoomFromPosition(Vector2Int pos)
     {
         foreach(RoomData room in _rooms)
         {
@@ -120,7 +144,14 @@ public class Dungeon : MonoBehaviour
         if (debugDungeon)
         {
             foreach (Vector2Int pos in _roomPositions) { 
-                Gizmos.color = Color.red;
+                if (pos == _loadedRoom.roomPosition)
+                {
+                    Gizmos.color = Color.green;
+                }
+                else
+                {
+                    Gizmos.color = Color.red;
+                }
                 Gizmos.DrawCube(new Vector3(pos.x, pos.y, 0), Vector3.one);
             }
         }
