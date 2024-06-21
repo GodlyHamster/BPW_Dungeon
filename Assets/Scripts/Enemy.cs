@@ -1,7 +1,8 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(GridMovement))]
-public class PlayerMovement : MonoBehaviour
+public class Enemy : MonoBehaviour
 {
     GridMovement _gridMovement;
 

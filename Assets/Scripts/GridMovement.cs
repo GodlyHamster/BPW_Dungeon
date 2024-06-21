@@ -1,17 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
+using UnityEngine.Events;
 
-public class GridMovement
+public class GridMovement : MonoBehaviour
 {
     public GridMovement(Vector2Int position)
     {
         _gridPosition = position;
     }
 
+    [SerializeField]
+    private Vector2Int _startPosition;
+
     private Vector2Int _gridPosition;
     public Vector2Int GridPosition { get { return _gridPosition; } }
+
+    public UnityEvent OnMoved = new UnityEvent();
+
+    private void Start()
+    {
+        _gridPosition = _startPosition;
+    }
 
     public Vector3 MoveToPos(Vector2Int position)
     {
@@ -27,6 +35,7 @@ public class GridMovement
             Door door = hit.collider.gameObject.GetComponent<Door>();
             Dungeon.instance.LoadRoom(door.linksToRoom);
         }
+        OnMoved.Invoke();
         return new Vector3(_gridPosition.x, _gridPosition.y, 0);
     }
 }

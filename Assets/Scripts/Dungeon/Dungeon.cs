@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Dungeon : MonoBehaviour
 {
@@ -22,6 +23,8 @@ public class Dungeon : MonoBehaviour
     private GameObject _loadedRoomObject;
 
     private List<Vector2Int> _roomPositions = new List<Vector2Int>();
+
+    public UnityEvent OnRoomLoaded = new UnityEvent();
 
     private void Awake()
     {
@@ -132,6 +135,8 @@ public class Dungeon : MonoBehaviour
             GameObject door = Instantiate(_doorPrefab, new Vector3(-8, 0, 0), Quaternion.identity, _loadedRoomObject.transform);
             door.GetComponent<Door>().linksToRoom = roomPos + new Vector2Int(-1, 0);
         }
+
+        OnRoomLoaded.Invoke();
     }
 
     public RoomData GetRoomFromPosition(Vector2Int pos)
