@@ -62,6 +62,7 @@ public class Dungeon : MonoBehaviour
         foreach (RoomData room in _rooms)
         {
             Vector2Int roomPos = room.roomPosition;
+            //set doors to true corresponding to existing rooms in that direction
             if (GetRoomFromPosition(roomPos + new Vector2Int(0, 1)) != null)
             {
                 GetRoomFromPosition(roomPos + new Vector2Int(0, 1)).bottomDoor = true;
@@ -77,6 +78,12 @@ public class Dungeon : MonoBehaviour
             if (GetRoomFromPosition(roomPos + new Vector2Int(-1, 0)) != null)
             {
                 GetRoomFromPosition(roomPos + new Vector2Int(-1, 0)).rigthDoor = true;
+            }
+
+            //Decide room type
+            if (Random.Range(0, 2) == 1)
+            {
+                room.roomType = RoomType.ENEMY;
             }
         }
 
@@ -148,9 +155,13 @@ public class Dungeon : MonoBehaviour
                 {
                     Gizmos.color = Color.green;
                 }
-                else
+                else if (GetRoomFromPosition(pos).roomType == RoomType.ENEMY)
                 {
                     Gizmos.color = Color.red;
+                }
+                else
+                {
+                    Gizmos.color = Color.blue;
                 }
                 Gizmos.DrawCube(new Vector3(pos.x, pos.y, 0), Vector3.one);
             }
