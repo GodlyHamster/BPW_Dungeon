@@ -134,13 +134,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   linksToRoom:
-    prefab: {fileID: 0}
+    prefab: {fileID: 4515909593926059513}
     roomType: 0
-    roomPosition: {x: 0, y: 0}
-    topDoor: {fileID: 0}
-    rigthDoor: {fileID: 0}
-    bottomDoor: {fileID: 0}
-    leftDoor: {fileID: 0}
+    roomPosition: {x: 5, y: 0}
+    topDoor: {fileID: 3911529319336823771}
+    rigthDoor: {fileID: 7231441051831358967}
+    bottomDoor: {fileID: 1260265847271049532}
+    leftDoor: {fileID: 6967356537081195705}
 --- !u!61 &476757469839453509
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -285,13 +285,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   linksToRoom:
-    prefab: {fileID: 0}
+    prefab: {fileID: 4515909593926059513}
     roomType: 0
-    roomPosition: {x: 0, y: 0}
-    topDoor: {fileID: 0}
-    rigthDoor: {fileID: 0}
-    bottomDoor: {fileID: 0}
-    leftDoor: {fileID: 0}
+    roomPosition: {x: 5, y: -1}
+    topDoor: {fileID: 3911529319336823771}
+    rigthDoor: {fileID: 7231441051831358967}
+    bottomDoor: {fileID: 1260265847271049532}
+    leftDoor: {fileID: 6967356537081195705}
 --- !u!61 &3760446690684696950
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2846,7 +2846,7 @@ MonoBehaviour:
   roomData:
     prefab: {fileID: 4515909593926059513}
     roomType: 0
-    roomPosition: {x: 0, y: 0}
+    roomPosition: {x: 1, y: -4}
     topDoor: {fileID: 3911529319336823771}
     rigthDoor: {fileID: 7231441051831358967}
     bottomDoor: {fileID: 1260265847271049532}
@@ -2950,13 +2950,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   linksToRoom:
-    prefab: {fileID: 0}
+    prefab: {fileID: 4515909593926059513}
     roomType: 0
-    roomPosition: {x: 0, y: 0}
-    topDoor: {fileID: 0}
-    rigthDoor: {fileID: 0}
-    bottomDoor: {fileID: 0}
-    leftDoor: {fileID: 0}
+    roomPosition: {x: 5, y: -1}
+    topDoor: {fileID: 3911529319336823771}
+    rigthDoor: {fileID: 7231441051831358967}
+    bottomDoor: {fileID: 1260265847271049532}
+    leftDoor: {fileID: 6967356537081195705}
 --- !u!61 &269022577120257772
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3101,13 +3101,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   linksToRoom:
-    prefab: {fileID: 0}
+    prefab: {fileID: 4515909593926059513}
     roomType: 0
-    roomPosition: {x: 0, y: 0}
-    topDoor: {fileID: 0}
-    rigthDoor: {fileID: 0}
-    bottomDoor: {fileID: 0}
-    leftDoor: {fileID: 0}
+    roomPosition: {x: 4, y: 0}
+    topDoor: {fileID: 3911529319336823771}
+    rigthDoor: {fileID: 7231441051831358967}
+    bottomDoor: {fileID: 1260265847271049532}
+    leftDoor: {fileID: 6967356537081195705}
 --- !u!61 &245218525078470560
 BoxCollider2D:
   m_ObjectHideFlags: 0

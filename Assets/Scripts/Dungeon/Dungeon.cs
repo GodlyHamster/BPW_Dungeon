@@ -31,6 +31,7 @@ public class Dungeon : MonoBehaviour
         GenerateRoomPositions();
     }
 
+    //Dungeon-room position generation algorithm
     private void GenerateRoomPositions()
     {
         Vector2Int startPos = Vector2Int.zero;
@@ -58,27 +59,23 @@ public class Dungeon : MonoBehaviour
     {
         foreach (RoomData room in _rooms)
         {
-            if (_roomPositions.Contains(room.roomPosition + new Vector2Int(0, 1)))
+            print(room.roomPosition);
+            if (GetRoomFromPosition(room.roomPosition + new Vector2Int(0, 1)) != null)
             {
                 room.topDoor.linksToRoom = GetRoomFromPosition(room.roomPosition + new Vector2Int(0, 1));
             }
-            if (_roomPositions.Contains(room.roomPosition + new Vector2Int(1, 0)))
+            if (GetRoomFromPosition(room.roomPosition + new Vector2Int(1, 0)) != null)
             {
                 room.rigthDoor.linksToRoom = GetRoomFromPosition(room.roomPosition + new Vector2Int(1, 0));
             }
-            if (_roomPositions.Contains(room.roomPosition + new Vector2Int(0, -1)))
+            if (GetRoomFromPosition(room.roomPosition + new Vector2Int(0, -1)) != null)
             {
                 room.bottomDoor.linksToRoom = GetRoomFromPosition(room.roomPosition + new Vector2Int(0, -1));
             }
-            if (_roomPositions.Contains(room.roomPosition + new Vector2Int(-1, 0)))
+            if (GetRoomFromPosition(room.roomPosition + new Vector2Int(-1, 0)) != null)
             {
                 room.leftDoor.linksToRoom = GetRoomFromPosition(room.roomPosition + new Vector2Int(-1, 0));
             }
-
-            if (room.topDoor.linksToRoom == null) room.topDoor.gameObject.SetActive(false);
-            if (room.rigthDoor.linksToRoom == null) room.rigthDoor.gameObject.SetActive(false);
-            if (room.bottomDoor.linksToRoom == null) room.bottomDoor.gameObject.SetActive(false);
-            if (room.leftDoor.linksToRoom == null) room.leftDoor.gameObject.SetActive(false);
         }
 
         LoadRoom(_rooms[0]);
@@ -86,12 +83,12 @@ public class Dungeon : MonoBehaviour
 
     private void AddRoom(Vector2Int pos)
     {
-        RoomData newRoom = new RoomData();
-        newRoom = _roomPrefabs[0].roomData.Clone();
-        newRoom.roomPosition = pos;
+        RoomData roomData = new RoomData();
+        roomData = _roomPrefabs[0].roomData.Clone();
+        roomData.roomPosition = pos;
 
         _roomPositions.Add(pos);
-        _rooms.Add(newRoom);
+        _rooms.Add(roomData);
     }
 
     public void LoadRoom(RoomData room)
@@ -115,7 +112,7 @@ public class Dungeon : MonoBehaviour
                 return room;
             }
         }
-        return new RoomData();
+        return null;
     }
 
     private void OnDrawGizmos()
