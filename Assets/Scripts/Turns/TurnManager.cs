@@ -22,7 +22,7 @@ public class TurnManager : MonoBehaviour
     {
         StopAllCoroutines();
         _entityTurnManagers = FindObjectsOfType<EntityTurnManager>().ToList();
-        StartCoroutine(Round());
+        StartCoroutine(StartNextRound());
     }
 
     private IEnumerator Round()
