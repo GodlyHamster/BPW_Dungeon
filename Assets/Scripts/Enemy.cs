@@ -1,41 +1,28 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, ITurnComponent
 {
-    GridMovement _gridMovement;
+    private UnityEvent TurnCompleteInvoker = new UnityEvent();
+    public UnityEvent OnTurnComplete { get { return TurnCompleteInvoker; } }
+
+    private EntityTurnManager _entityTurnManager;
 
     private void Awake()
     {
-        _gridMovement = GetComponent<GridMovement>();
+        _entityTurnManager = GetComponent<EntityTurnManager>();
+        _entityTurnManager.OnStartTurn.AddListener(DoAction);
     }
 
-    private void Start()
+    private void DoAction()
     {
-        transform.position = _gridMovement.MoveToPos(_gridMovement.GridPosition);
+        StartCoroutine(ExecuteAction());
     }
 
-    void Update()
+    private IEnumerator ExecuteAction()
     {
-        Vector2Int newMoveValue = Vector2Int.zero;
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            newMoveValue = new Vector2Int(0, 1);
-        }
-        else if (Input.GetKeyDown(KeyCode.A))
-        {
-            newMoveValue = new Vector2Int(-1, 0);
-        }
-        else if (Input.GetKeyDown(KeyCode.S))
-        {
-            newMoveValue = new Vector2Int(0, -1);
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            newMoveValue = new Vector2Int(1, 0);
-        }
-
-        transform.position = _gridMovement.MoveToPos(_gridMovement.GridPosition + newMoveValue);
+        yield return new WaitForSeconds(1);
+        TurnCompleteInvoker.Invoke();
     }
 }

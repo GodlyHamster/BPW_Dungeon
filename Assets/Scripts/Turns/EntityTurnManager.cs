@@ -1,13 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EntityTurnManager : MonoBehaviour
 {
     private List<ITurnComponent> _turnComponents = new List<ITurnComponent>();
 
     private bool _activeTurn = false;
+    public bool activeTurn { get { return _activeTurn; } }
     private bool _completedTurn = false;
     public bool completedTurn {  get { return _completedTurn; } }
+
+    public UnityEvent OnStartTurn = new UnityEvent();
 
     private void Awake()
     {
@@ -29,6 +33,7 @@ public class EntityTurnManager : MonoBehaviour
     public void SetActiveTurn(bool activateTurn)
     {
         _activeTurn = activateTurn;
+        if (activeTurn) OnStartTurn.Invoke();
     }
 
     private void CompletedAction()

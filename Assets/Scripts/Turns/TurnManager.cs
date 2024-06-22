@@ -12,23 +12,32 @@ public class TurnManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-    }
-    private void Start()
-    {
-        Dungeon.instance.OnRoomLoaded.AddListener(GetTurnEntities);
+        Dungeon.instance.OnRoomLoaded.AddListener(GetEntitiesAndStart);
     }
 
-    private void GetTurnEntities()
+    public void ClearEntities()
     {
         StopAllCoroutines();
+        _entityTurnManagers.Clear();
+        print(_entityTurnManagers.Count);
+    }
+
+    private void GetEntitiesAndStart()
+    {
         _entityTurnManagers = FindObjectsOfType<EntityTurnManager>().ToList();
+        foreach (var entity in _entityTurnManagers)
+        {
+            print(entity.gameObject.name);
+        }
         StartCoroutine(StartNextRound());
     }
 
     private IEnumerator Round()
     {
+        print(_entityTurnManagers.Count);
         foreach (var turnEntity in _entityTurnManagers)
         {
+            print(turnEntity.gameObject.name);
             //start entities turn and wait until completed
             turnEntity.SetActiveTurn(true);
             print("waiting for " + turnEntity.gameObject.name + " to take turn...");
@@ -43,6 +52,7 @@ public class TurnManager : MonoBehaviour
         foreach (var turnEntity in _entityTurnManagers)
         {
             //reset all entities their turn
+            print(turnEntity.gameObject.name);
             turnEntity.ResetTurn();
         }
         //restart the round

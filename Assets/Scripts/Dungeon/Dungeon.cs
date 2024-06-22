@@ -16,11 +16,14 @@ public class Dungeon : MonoBehaviour
     private GameObject _roomPrefab;
     [SerializeField]
     private GameObject _doorPrefab;
+    [SerializeField]
+    private GameObject _enemyPrefab;
 
     private List<RoomData> _rooms = new List<RoomData>();
 
     private RoomData _loadedRoom;
     private GameObject _loadedRoomObject;
+    private List<GameObject> _enemiesInRoom = new List<GameObject>();
 
     private List<Vector2Int> _roomPositions = new List<Vector2Int>();
 
@@ -106,8 +109,7 @@ public class Dungeon : MonoBehaviour
     {
         if (_loadedRoomObject != null)
         {
-            Destroy(_loadedRoomObject);
-            _loadedRoomObject = null;
+            UnloadRoom();
         }
         //instantiate room and set correct room data
         _loadedRoomObject = Instantiate(_roomPrefab);
@@ -136,7 +138,29 @@ public class Dungeon : MonoBehaviour
             door.GetComponent<Door>().linksToRoom = roomPos + new Vector2Int(-1, 0);
         }
 
+        //load enemies
+        if (_loadedRoom.roomType == RoomType.ENEMY)
+        {
+            _enemiesInRoom.Add(Instantiate(_enemyPrefab));
+        }
+
+        print("room has been loaded");
         OnRoomLoaded.Invoke();
+    }
+
+    public void UnloadRoom()
+    {
+        Destroy(_loadedRoomObject);
+        _loadedRoomObject = null;
+
+        //clear all entities from room
+        int enemyAmount = _enemiesInRoom.Count;
+        for (int i = 0; i < enemyAmount; i++)
+        {
+            Destroy(_enemiesInRoom[i]);
+        }
+        _enemiesInRoom.Clear();
+        TurnManager.instance.ClearEntities();
     }
 
     public RoomData GetRoomFromPosition(Vector2Int pos)
