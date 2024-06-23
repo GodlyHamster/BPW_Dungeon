@@ -15,7 +15,7 @@ MonoBehaviour:
   prefab: {fileID: 4515909593926059513, guid: 2cadce9b0ddb91440a0dbf3a24d4ae7e, type: 3}
   roomType: 0
   roomPosition: {x: 0, y: 0}
-  roomSize: {x: 15, y: 11}
+  roomSize: {x: 16, y: 12}
   doors:
     top: 0
     right: 0

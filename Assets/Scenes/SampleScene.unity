@@ -154,7 +154,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugDungeon: 1
   _roomAmount: 20
-  _roomScriptable: {fileID: 11400000, guid: 9da0276a9b885db488cff84bec87d1c9, type: 2}
+  _emptyRoom: {fileID: 11400000, guid: a6274a214d0741b44a17a0b7a4f5325b, type: 2}
+  _enemyRoom: {fileID: 11400000, guid: 9da0276a9b885db488cff84bec87d1c9, type: 2}
   _doorPrefab: {fileID: 5278163404632136934, guid: 59cc2f88150e7d24e8d25f73d2fa7851, type: 3}
   _enemyPrefab: {fileID: 1696467637819730038, guid: a5d0598996d764c4987c49eaea22fd6a, type: 3}
   OnRoomLoaded:
@@ -325,7 +326,7 @@ GameObject:
   - component: {fileID: 1145654960}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -358,7 +359,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22aafe2e2a8b6fb43abca976c7737bb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startPosition: {x: 0, y: 0}
   OnMoved:
     m_PersistentCalls:
       m_Calls: []

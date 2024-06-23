@@ -139,31 +139,33 @@ public class Dungeon : MonoBehaviour
         Vector2Int size = _loadedRoom.roomSize;
         if (_loadedRoom.doors.top)
         {
-            GameObject door = Instantiate(_doorPrefab, new Vector3(0, 6, 0), Quaternion.identity, _loadedRoomObject.transform);
+            GameObject door = Instantiate(_doorPrefab, new Vector3(0, size.y/2, 0), Quaternion.identity, _loadedRoomObject.transform);
             door.GetComponent<Door>().linksToRoom = roomPos + new Vector2Int(0, 1);
         }
         if (_loadedRoom.doors.bottom) {
-            GameObject door = Instantiate(_doorPrefab, new Vector3(0, -6, 0), Quaternion.identity, _loadedRoomObject.transform);
+            GameObject door = Instantiate(_doorPrefab, new Vector3(0, -size.y/2, 0), Quaternion.identity, _loadedRoomObject.transform);
             door.GetComponent<Door>().linksToRoom = roomPos + new Vector2Int(0, -1);
         }
         if (_loadedRoom.doors.right)
         {
-            GameObject door = Instantiate(_doorPrefab, new Vector3(8, 0, 0), Quaternion.identity, _loadedRoomObject.transform);
+            GameObject door = Instantiate(_doorPrefab, new Vector3(size.x/2, 0, 0), Quaternion.identity, _loadedRoomObject.transform);
             door.GetComponent<Door>().linksToRoom = roomPos + new Vector2Int(1, 0);
         }
         if (_loadedRoom.doors.left)
         {
-            GameObject door = Instantiate(_doorPrefab, new Vector3(-8, 0, 0), Quaternion.identity, _loadedRoomObject.transform);
+            GameObject door = Instantiate(_doorPrefab, new Vector3(-size.x/2, 0, 0), Quaternion.identity, _loadedRoomObject.transform);
             door.GetComponent<Door>().linksToRoom = roomPos + new Vector2Int(-1, 0);
         }
 
         //load enemies
         if (_loadedRoom.roomType == RoomType.ENEMY)
         {
-            foreach (EnemyData enemy in _loadedRoom.enemies)
+            foreach (EnemyData enemyData in _loadedRoom.enemies)
             {
-                Vector3 enemyPos = new Vector3(enemy.position.x, enemy.position.y, 0);
-                GameObject enemyObj = Instantiate(enemy.prefab, enemyPos, Quaternion.identity);
+                Vector3 enemyPos = new Vector3(enemyData.position.x, enemyData.position.y, 0);
+                GameObject enemyObj = Instantiate(enemyData.prefab, enemyPos, Quaternion.identity);
+                EnemyBase enemy = enemyObj.GetComponent(typeof(EnemyBase)) as EnemyBase;
+                enemy.enemyData = enemyData;
                 _enemiesInRoom.Add(enemyObj);
             }
         }

@@ -21,7 +21,7 @@ public class GridMovement : MonoBehaviour
             _gridPosition = position;
             return new Vector3(position.x, position.y, 0);
         }
-        if (hit.collider.gameObject.tag == "Door")
+        if (hit.collider.gameObject.tag == "Door" && gameObject.tag == "Player")
         {
             _gridPosition = new Vector2Int(-_gridPosition.x, -_gridPosition.y);
             Door door = hit.collider.gameObject.GetComponent<Door>();
