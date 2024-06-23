@@ -143,8 +143,6 @@ public class Dungeon : MonoBehaviour
         {
             _enemiesInRoom.Add(Instantiate(_enemyPrefab));
         }
-
-        print("room has been loaded");
         OnRoomLoaded.Invoke();
     }
 

@@ -24,17 +24,19 @@ public class TurnManager : MonoBehaviour
 
     private void GetEntitiesAndStart()
     {
+        StartCoroutine(GatherEntitiesAndStart());
+    }
+
+    private IEnumerator GatherEntitiesAndStart()
+    {
+        yield return new WaitUntil(() => _entityTurnManagers.Count == 0);
         _entityTurnManagers = FindObjectsOfType<EntityTurnManager>().ToList();
-        foreach (var entity in _entityTurnManagers)
-        {
-            print(entity.gameObject.name);
-        }
         StartCoroutine(StartNextRound());
+        yield return null;
     }
 
     private IEnumerator Round()
     {
-        print(_entityTurnManagers.Count);
         foreach (var turnEntity in _entityTurnManagers)
         {
             print(turnEntity.gameObject.name);
@@ -52,11 +54,10 @@ public class TurnManager : MonoBehaviour
         foreach (var turnEntity in _entityTurnManagers)
         {
             //reset all entities their turn
-            print(turnEntity.gameObject.name);
             turnEntity.ResetTurn();
         }
         //restart the round
-        yield return null;
         StartCoroutine(Round());
+        yield return null;
     }
 }
