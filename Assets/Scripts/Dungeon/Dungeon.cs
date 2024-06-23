@@ -12,7 +12,9 @@ public class Dungeon : MonoBehaviour
     private int _roomAmount;
 
     [SerializeField]
-    private RoomScriptableObject _roomScriptable;
+    private RoomScriptableObject _emptyRoom;
+    [SerializeField]
+    private RoomScriptableObject _enemyRoom;
     [SerializeField]
     private GameObject _doorPrefab;
     [SerializeField]
@@ -85,20 +87,11 @@ public class Dungeon : MonoBehaviour
                 GetRoomFromPosition(roomPos + new Vector2Int(-1, 0)).doors.right = true;
             }
 
-            //Decide room type
-            if (roomPos == Vector2Int.zero)
+            //Generate things based on room type
+            if (room.roomType == RoomType.ENEMY)
             {
-                room.roomType = RoomType.EMPTY;
-            }
-            else if (Random.Range(0, 2) == 1)
-            {
-                room.roomType = RoomType.ENEMY;
                 Vector2Int randomPos = room.possibleEnemySpawns.RandomItem();
                 room.enemies.Add(new EnemyData(_enemyPrefab, randomPos));
-            }
-            else
-            {
-                room.roomType = RoomType.EMPTY;
             }
         }
 
@@ -108,7 +101,20 @@ public class Dungeon : MonoBehaviour
     private void AddRoom(Vector2Int pos)
     {
         RoomScriptableObject rso = ScriptableObject.CreateInstance<RoomScriptableObject>();
-        rso = Instantiate(_roomScriptable);
+
+        //Decide room type
+        if (pos == Vector2Int.zero)
+        {
+            rso = Instantiate(_emptyRoom);
+        }
+        else if (Random.Range(0, 2) == 1)
+        {
+            rso = Instantiate(_enemyRoom);
+        }
+        else
+        {
+            rso = Instantiate(_emptyRoom);
+        }
         rso.roomPosition = pos;
 
         _roomPositions.Add(pos);
@@ -122,7 +128,7 @@ public class Dungeon : MonoBehaviour
             UnloadRoom();
         }
         //instantiate room and set correct room data
-        _loadedRoomObject = Instantiate(_roomScriptable.prefab);
+        _loadedRoomObject = Instantiate(_enemyRoom.prefab);
         _loadedRoom = GetRoomFromPosition(roomPos);
         _loadedRoomObject.GetComponent<Room>().roomData = _loadedRoom;
 
