@@ -19,7 +19,6 @@ public class TurnManager : MonoBehaviour
     {
         StopAllCoroutines();
         _entityTurnManagers.Clear();
-        print(_entityTurnManagers.Count);
     }
 
     private void GetEntitiesAndStart()
@@ -39,7 +38,6 @@ public class TurnManager : MonoBehaviour
     {
         foreach (var turnEntity in _entityTurnManagers)
         {
-            print(turnEntity.gameObject.name);
             //start entities turn and wait until completed
             turnEntity.SetActiveTurn(true);
             print("waiting for " + turnEntity.gameObject.name + " to take turn...");

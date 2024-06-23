@@ -2459,7 +2459,7 @@ GameObject:
   - component: {fileID: 5029232548142181142}
   - component: {fileID: 7416578292998563056}
   m_Layer: 0
-  m_Name: Room_NESW
+  m_Name: Room_Empty
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2505,12 +2505,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 783fe01f630ca0143a35747b38887a02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomData:
-    prefab: {fileID: 4515909593926059513}
-    roomType: 0
-    roomPosition: {x: 0, y: 0}
-    roomSize: {x: 15, y: 11}
-    topDoor: 0
-    rigthDoor: 0
-    bottomDoor: 0
-    leftDoor: 0
+  roomData: {fileID: 11400000, guid: a6274a214d0741b44a17a0b7a4f5325b, type: 2}

@@ -154,7 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugDungeon: 1
   _roomAmount: 20
-  _roomPrefab: {fileID: 4515909593926059513, guid: 2cadce9b0ddb91440a0dbf3a24d4ae7e, type: 3}
+  _roomScriptable: {fileID: 11400000, guid: 9da0276a9b885db488cff84bec87d1c9, type: 2}
   _doorPrefab: {fileID: 5278163404632136934, guid: 59cc2f88150e7d24e8d25f73d2fa7851, type: 3}
   _enemyPrefab: {fileID: 1696467637819730038, guid: a5d0598996d764c4987c49eaea22fd6a, type: 3}
   OnRoomLoaded:
@@ -386,6 +386,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dd2149b405796947bbcc35acc9c6eda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnStartTurn:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1582391731
 GameObject:
   m_ObjectHideFlags: 0

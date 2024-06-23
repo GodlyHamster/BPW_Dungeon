@@ -12,15 +12,15 @@ public class Dungeon : MonoBehaviour
     private int _roomAmount;
 
     [SerializeField]
-    private GameObject _roomPrefab;
+    private RoomScriptableObject _roomScriptable;
     [SerializeField]
     private GameObject _doorPrefab;
     [SerializeField]
     private GameObject _enemyPrefab;
 
-    private List<RoomData> _rooms = new List<RoomData>();
+    private List<RoomScriptableObject> _rooms = new List<RoomScriptableObject>();
 
-    private RoomData _loadedRoom;
+    private RoomScriptableObject _loadedRoom;
     private GameObject _loadedRoomObject;
     private List<GameObject> _enemiesInRoom = new List<GameObject>();
 
@@ -64,7 +64,7 @@ public class Dungeon : MonoBehaviour
 
     private void GenerateRooms()
     {
-        foreach (RoomData room in _rooms)
+        foreach (RoomScriptableObject room in _rooms)
         {
             Vector2Int roomPos = room.roomPosition;
             //set doors to true corresponding to existing rooms in that direction
@@ -86,9 +86,19 @@ public class Dungeon : MonoBehaviour
             }
 
             //Decide room type
-            if (Random.Range(0, 2) == 1)
+            if (roomPos == Vector2Int.zero)
+            {
+                room.roomType = RoomType.EMPTY;
+            }
+            else if (Random.Range(0, 2) == 1)
             {
                 room.roomType = RoomType.ENEMY;
+                Vector2Int randomPos = room.possibleEnemySpawns.RandomItem();
+                room.enemies.Add(new EnemyData(_enemyPrefab, randomPos));
+            }
+            else
+            {
+                room.roomType = RoomType.EMPTY;
             }
         }
 
@@ -97,11 +107,12 @@ public class Dungeon : MonoBehaviour
 
     private void AddRoom(Vector2Int pos)
     {
-        RoomData roomData = new RoomData();
-        roomData.roomPosition = pos;
+        RoomScriptableObject rso = ScriptableObject.CreateInstance<RoomScriptableObject>();
+        rso = Instantiate(_roomScriptable);
+        rso.roomPosition = pos;
 
         _roomPositions.Add(pos);
-        _rooms.Add(roomData);
+        _rooms.Add(rso);
     }
 
     public void LoadRoom(Vector2Int roomPos)
@@ -111,7 +122,7 @@ public class Dungeon : MonoBehaviour
             UnloadRoom();
         }
         //instantiate room and set correct room data
-        _loadedRoomObject = Instantiate(_roomPrefab);
+        _loadedRoomObject = Instantiate(_roomScriptable.prefab);
         _loadedRoom = GetRoomFromPosition(roomPos);
         _loadedRoomObject.GetComponent<Room>().roomData = _loadedRoom;
 
@@ -140,7 +151,11 @@ public class Dungeon : MonoBehaviour
         //load enemies
         if (_loadedRoom.roomType == RoomType.ENEMY)
         {
-            _enemiesInRoom.Add(Instantiate(_enemyPrefab));
+            foreach (EnemyData enemy in _loadedRoom.enemies)
+            {
+                Vector3 enemyPos = new Vector3(enemy.position.x, enemy.position.y, 0);
+                _enemiesInRoom.Add(Instantiate(enemy.prefab, enemyPos, Quaternion.identity));
+            }
         }
         OnRoomLoaded.Invoke();
     }
@@ -160,9 +175,9 @@ public class Dungeon : MonoBehaviour
         TurnManager.instance.ClearEntities();
     }
 
-    public RoomData GetRoomFromPosition(Vector2Int pos)
+    public RoomScriptableObject GetRoomFromPosition(Vector2Int pos)
     {
-        foreach(RoomData room in _rooms)
+        foreach(RoomScriptableObject room in _rooms)
         {
             if (room.roomPosition == pos)
             {
