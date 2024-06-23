@@ -11,10 +11,13 @@ public class Dungeon : MonoBehaviour
     [SerializeField]
     private int _roomAmount;
 
+    [Header("Room Scriptables")]
     [SerializeField]
     private RoomScriptableObject _emptyRoom;
     [SerializeField]
     private RoomScriptableObject _enemyRoom;
+
+    [Header("Room Objects")]
     [SerializeField]
     private GameObject _doorPrefab;
     [SerializeField]
