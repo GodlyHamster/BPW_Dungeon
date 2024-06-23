@@ -1,18 +1,16 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
 public class RoomData
 {
     public RoomData() { }
-    public RoomData(GameObject p, RoomType r, Vector2Int pos, bool top, bool right, bool down, bool left) { 
+    public RoomData(GameObject p, RoomType r, Vector2Int pos, DoorsData doors) { 
         prefab = p;
         roomType = r;
         roomPosition = pos;
-        topDoor = top;
-        rigthDoor = right;
-        bottomDoor = down;
-        leftDoor = left;
+        this.doors = doors;
     }
 
     public GameObject prefab;
@@ -22,14 +20,14 @@ public class RoomData
     public Vector2Int roomSize;
 
     [Header("Doors")]
-    public bool topDoor;
-    public bool rigthDoor;
-    public bool bottomDoor;
-    public bool leftDoor;
+    public DoorsData doors = new DoorsData();
+
+    [Header("Enemy")]
+    public List<EnemyData> enemies = new List<EnemyData>();
 
     public RoomData Clone()
     {
-        RoomData clone = new RoomData(prefab, roomType, roomPosition, topDoor, rigthDoor, bottomDoor, leftDoor);
+        RoomData clone = new RoomData(prefab, roomType, roomPosition, doors);
         return clone;
     }
 }

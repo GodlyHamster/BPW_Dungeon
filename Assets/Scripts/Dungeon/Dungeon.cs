@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -71,19 +70,19 @@ public class Dungeon : MonoBehaviour
             //set doors to true corresponding to existing rooms in that direction
             if (GetRoomFromPosition(roomPos + new Vector2Int(0, 1)) != null)
             {
-                GetRoomFromPosition(roomPos + new Vector2Int(0, 1)).bottomDoor = true;
+                GetRoomFromPosition(roomPos + new Vector2Int(0, 1)).doors.bottom = true;
             }
             if (GetRoomFromPosition(roomPos + new Vector2Int(1, 0)) != null)
             {
-                GetRoomFromPosition(roomPos + new Vector2Int(1, 0)).leftDoor = true;
+                GetRoomFromPosition(roomPos + new Vector2Int(1, 0)).doors.left = true;
             }
             if (GetRoomFromPosition(roomPos + new Vector2Int(0, -1)) != null)
             {
-                GetRoomFromPosition(roomPos + new Vector2Int(0, -1)).topDoor = true;
+                GetRoomFromPosition(roomPos + new Vector2Int(0, -1)).doors.top = true;
             }
             if (GetRoomFromPosition(roomPos + new Vector2Int(-1, 0)) != null)
             {
-                GetRoomFromPosition(roomPos + new Vector2Int(-1, 0)).rigthDoor = true;
+                GetRoomFromPosition(roomPos + new Vector2Int(-1, 0)).doors.right = true;
             }
 
             //Decide room type
@@ -118,21 +117,21 @@ public class Dungeon : MonoBehaviour
 
         //place doors
         Vector2Int size = _loadedRoom.roomSize;
-        if (_loadedRoom.topDoor)
+        if (_loadedRoom.doors.top)
         {
             GameObject door = Instantiate(_doorPrefab, new Vector3(0, 6, 0), Quaternion.identity, _loadedRoomObject.transform);
             door.GetComponent<Door>().linksToRoom = roomPos + new Vector2Int(0, 1);
         }
-        if (_loadedRoom.bottomDoor) {
+        if (_loadedRoom.doors.bottom) {
             GameObject door = Instantiate(_doorPrefab, new Vector3(0, -6, 0), Quaternion.identity, _loadedRoomObject.transform);
             door.GetComponent<Door>().linksToRoom = roomPos + new Vector2Int(0, -1);
         }
-        if (_loadedRoom.rigthDoor)
+        if (_loadedRoom.doors.right)
         {
             GameObject door = Instantiate(_doorPrefab, new Vector3(8, 0, 0), Quaternion.identity, _loadedRoomObject.transform);
             door.GetComponent<Door>().linksToRoom = roomPos + new Vector2Int(1, 0);
         }
-        if (_loadedRoom.leftDoor)
+        if (_loadedRoom.doors.left)
         {
             GameObject door = Instantiate(_doorPrefab, new Vector3(-8, 0, 0), Quaternion.identity, _loadedRoomObject.transform);
             door.GetComponent<Door>().linksToRoom = roomPos + new Vector2Int(-1, 0);
