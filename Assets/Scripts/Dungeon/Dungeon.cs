@@ -163,7 +163,8 @@ public class Dungeon : MonoBehaviour
             foreach (EnemyData enemy in _loadedRoom.enemies)
             {
                 Vector3 enemyPos = new Vector3(enemy.position.x, enemy.position.y, 0);
-                _enemiesInRoom.Add(Instantiate(enemy.prefab, enemyPos, Quaternion.identity));
+                GameObject enemyObj = Instantiate(enemy.prefab, enemyPos, Quaternion.identity);
+                _enemiesInRoom.Add(enemyObj);
             }
         }
         OnRoomLoaded.Invoke();

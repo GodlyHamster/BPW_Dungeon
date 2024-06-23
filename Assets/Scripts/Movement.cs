@@ -17,7 +17,7 @@ public class Movement : MonoBehaviour, ITurnComponent
 
     private void Start()
     {
-        transform.position = _gridMovement.MoveToPos(_gridMovement.GridPosition);
+        transform.position = _gridMovement.SetPos(_gridMovement.GridPosition);
     }
 
     void Update()
@@ -46,6 +46,6 @@ public class Movement : MonoBehaviour, ITurnComponent
             TurnCompleteInvoker.Invoke();
         }
 
-        transform.position = _gridMovement.MoveToPos(_gridMovement.GridPosition + newMoveValue);
+        transform.position = _gridMovement.SetPos(_gridMovement.GridPosition + newMoveValue);
     }
 }
