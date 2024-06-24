@@ -8,6 +8,8 @@ public class Health : MonoBehaviour
     [SerializeField]
     private int _health;
 
+    public int health { get { return _health; } }
+
     public UnityEvent OnDamageTaken = new UnityEvent();
     public UnityEvent OnDeath = new UnityEvent();
 
