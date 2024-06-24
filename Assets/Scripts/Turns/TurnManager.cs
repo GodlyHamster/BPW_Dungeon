@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class TurnManager : MonoBehaviour
 {
     public static TurnManager instance;
 
     private List<EntityTurnManager> _entityTurnManagers = new List<EntityTurnManager>();
+
+    public UnityEvent OnRoundEnd = new UnityEvent();
 
     private void Awake()
     {
@@ -49,6 +52,7 @@ public class TurnManager : MonoBehaviour
 
     private IEnumerator StartNextRound()
     {
+        OnRoundEnd.Invoke();
         foreach (var turnEntity in _entityTurnManagers)
         {
             //reset all entities their turn

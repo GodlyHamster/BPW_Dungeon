@@ -13,6 +13,8 @@ public class Dungeon : MonoBehaviour
 
     [Header("Room Scriptables")]
     [SerializeField]
+    private RoomScriptableObject _tutorialRoom;
+    [SerializeField]
     private RoomScriptableObject _emptyRoom;
     [SerializeField]
     private RoomScriptableObject _enemyRoom;
@@ -108,7 +110,7 @@ public class Dungeon : MonoBehaviour
         //Decide room type
         if (pos == Vector2Int.zero)
         {
-            rso = Instantiate(_emptyRoom);
+            rso = Instantiate(_tutorialRoom);
         }
         else if (Random.Range(0, 2) == 1)
         {
@@ -131,8 +133,8 @@ public class Dungeon : MonoBehaviour
             UnloadRoom();
         }
         //instantiate room and set correct room data
-        _loadedRoomObject = Instantiate(_enemyRoom.prefab);
         _loadedRoom = GetRoomFromPosition(roomPos);
+        _loadedRoomObject = Instantiate(_loadedRoom.prefab);
         _loadedRoomObject.GetComponent<Room>().roomData = _loadedRoom;
 
         //place doors

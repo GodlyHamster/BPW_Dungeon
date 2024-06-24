@@ -154,10 +154,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugDungeon: 1
   _roomAmount: 20
+  _tutorialRoom: {fileID: 11400000, guid: 59681e1f91dcb314c8d7c61bb69eb50b, type: 2}
   _emptyRoom: {fileID: 11400000, guid: a6274a214d0741b44a17a0b7a4f5325b, type: 2}
   _enemyRoom: {fileID: 11400000, guid: 9da0276a9b885db488cff84bec87d1c9, type: 2}
   _doorPrefab: {fileID: 5278163404632136934, guid: 59cc2f88150e7d24e8d25f73d2fa7851, type: 3}
-  _enemyPrefab: {fileID: 1696467637819730038, guid: a5d0598996d764c4987c49eaea22fd6a, type: 3}
+  _enemyPrefab: {fileID: 5427419348576995441, guid: 238aca5fc997da44aade44cd7d3d8180, type: 3}
   OnRoomLoaded:
     m_PersistentCalls:
       m_Calls: []
@@ -205,6 +206,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bea2641c8c77a4e43b3eccc32ff44440, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnRoundEnd:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &490038188
 Transform:
   m_ObjectHideFlags: 0
@@ -390,6 +394,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1145654955}
   - component: {fileID: 1145654959}
+  - component: {fileID: 1145654962}
   - component: {fileID: 1145654958}
   - component: {fileID: 1145654960}
   - component: {fileID: 1145654961}
@@ -478,6 +483,19 @@ MonoBehaviour:
   OnDeath:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1145654962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1145654954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69313ecc68741904dbe94bcf357bc3e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attackPreview: {fileID: 6113005801028388433, guid: 1bddf6b036ac4ba44af50be7298d9867, type: 3}
 --- !u!1 &1527629132
 GameObject:
   m_ObjectHideFlags: 0
@@ -627,7 +645,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
