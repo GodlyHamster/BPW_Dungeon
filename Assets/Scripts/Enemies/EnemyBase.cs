@@ -31,7 +31,7 @@ public class EnemyBase : MonoBehaviour, ITurnComponent
         StartCoroutine(ExecuteAction());
     }
 
-    private IEnumerator ExecuteAction()
+    protected virtual IEnumerator ExecuteAction()
     {
         yield return new WaitForSeconds(1);
         transform.position = gridmovement.SetPos(gridmovement.GridPosition + Direction2D.GetRandomDirection());

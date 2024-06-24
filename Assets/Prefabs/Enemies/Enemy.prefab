@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 3674338082364387957}
   - component: {fileID: 8985304307559893433}
   - component: {fileID: 78113629160072099}
+  - component: {fileID: -5305005387868665251}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -131,6 +132,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dd2149b405796947bbcc35acc9c6eda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnStartTurn:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &8985304307559893433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,7 +147,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22aafe2e2a8b6fb43abca976c7737bb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startPosition: {x: 0, y: 0}
   OnMoved:
     m_PersistentCalls:
       m_Calls: []
@@ -159,3 +162,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7288dec23c74d240956714b65e6fc33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyData:
+    prefab: {fileID: 1696467637819730038}
+    position: {x: 0, y: 0}
+    health: {fileID: -5305005387868665251}
+--- !u!114 &-5305005387868665251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1696467637819730038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d34e3bfb1ad581a46be9c6b3268f83a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 0
+  _health: 0
+  OnDamageTaken:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []

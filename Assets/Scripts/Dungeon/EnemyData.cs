@@ -12,4 +12,5 @@ public class EnemyData
 
     public GameObject prefab;
     public Vector2Int position; 
+    public Health health;
 }

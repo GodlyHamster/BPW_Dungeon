@@ -176,6 +176,7 @@ public class Dungeon : MonoBehaviour
     {
         Destroy(_loadedRoomObject);
         _loadedRoomObject = null;
+        _loadedRoom = null;
 
         //clear all entities from room
         int enemyAmount = _enemiesInRoom.Count;
