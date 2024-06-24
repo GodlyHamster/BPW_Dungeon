@@ -18,11 +18,11 @@ public class EnemyBase : MonoBehaviour, ITurnComponent
         gridmovement = GetComponent<GridMovement>();
         _entityTurnManager = GetComponent<EntityTurnManager>();
         _entityTurnManager.OnStartTurn.AddListener(DoAction);
+        Dungeon.instance.OnRoomLoaded.AddListener(SetStartLocation);
     }
 
-    private void Start()
+    private void SetStartLocation()
     {
-        //set this to spawn location
         transform.position = gridmovement.SetPos(enemyData.position);
     }
 
@@ -34,7 +34,7 @@ public class EnemyBase : MonoBehaviour, ITurnComponent
     private IEnumerator ExecuteAction()
     {
         yield return new WaitForSeconds(1);
-        transform.position += gridmovement.SetPos(Direction2D.GetRandomDirection());
+        transform.position = gridmovement.SetPos(gridmovement.GridPosition + Direction2D.GetRandomDirection());
         TurnCompleteInvoker.Invoke();
     }
 }
