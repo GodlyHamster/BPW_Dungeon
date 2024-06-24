@@ -1,20 +1,21 @@
+using System;
 using UnityEngine;
-using UnityEngine.Events;
 
-public class Attack : MonoBehaviour, ITurnComponent
+[Serializable]
+public class Attack
 {
-    private UnityEvent TurnCompleteInvoker = new UnityEvent();
-    public UnityEvent OnTurnComplete { get { return TurnCompleteInvoker; } }
-
-    [SerializeField]
-    private GameObject _attackPreview;
-
-    private void Update()
+    public Attack()
     {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Instantiate(_attackPreview, transform.position + new Vector3(1, 0), Quaternion.identity);
-            TurnCompleteInvoker.Invoke();
-        }
+        damage = 1;
+        position = Vector2Int.zero;
     }
+
+    public Attack(int damage, Vector2Int position)
+    {
+        this.damage = damage;
+        this.position = position;
+    }
+
+    public int damage;
+    public Vector2Int position;
 }
