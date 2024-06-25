@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class AttackManager : MonoBehaviour
@@ -8,8 +9,8 @@ public class AttackManager : MonoBehaviour
     [SerializeField]
     private GameObject _attackPreview;
 
-    private List<Attack> _attacks = new List<Attack>();
-    private List<GameObject> _attackObjects = new List<GameObject>();
+    //perhaps change it to a Vector2Int that is connected to a valuepair <Attack, GameObject>
+    private Dictionary<Attack, GameObject> _attacks = new Dictionary<Attack, GameObject>();
 
     private void Awake()
     {
@@ -22,34 +23,28 @@ public class AttackManager : MonoBehaviour
         Dungeon.instance.OnRoomLoaded.AddListener(ClearAllAttacks);
     }
 
-    public void AddAttack(int damage, Vector2Int pos)
+    public bool AddAttack(Attack attack)
     {
-        _attacks.Add(new Attack(damage, pos));
-        _attackObjects.Add(Instantiate(_attackPreview, new Vector3(pos.x, pos.y), Quaternion.identity));
+        if (_attacks.ContainsKey(attack)) return false;
+        GameObject newAttackObj = Instantiate(_attackPreview, new Vector3(attack.position.x, attack.position.y), Quaternion.identity);
+        _attacks.Add(attack, newAttackObj);
+        return true;
     }
 
     private void ClearAllAttacks()
     {
-        print(_attacks.Count);
         if (_attacks.Count == 0) return;
-        int attacksToClear = _attacks.Count;
-        for (int i = 0; i < attacksToClear; i++)
+        int attacksToClear = _attacks.Count - 1;
+        for (int i = attacksToClear; i >= 0; i--)
         {
-            Destroy(_attackObjects[i]);
-            _attackObjects.RemoveAt(i);
+            Destroy(_attacks.ElementAt(i).Value);
             _attacks.RemoveAt(i);
         }
+        _attacks.Clear();
     }
 
     private void UpdateAttackSpaces()
     {
-        if (_attacks.Count == 0) return;
-        int attacksToClear = _attacks.Count;
-        for (int i = 0; i < attacksToClear; i++)
-        {
-            Destroy(_attackObjects[i]);
-            _attackObjects.RemoveAt(i);
-            _attacks.RemoveAt(i);
-        }
+        //TODO update spaces
     }
 }

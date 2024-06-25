@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 public static class DictionaryExtension
 {
@@ -9,5 +11,10 @@ public static class DictionaryExtension
             if (item.Value.Equals(value)) return item.Key;
         }
         return default(T);
+    }
+
+    public static bool RemoveAt<T, W>(this Dictionary<T, W> dict, int index)
+    {
+        return dict.Remove(dict.ElementAt(index).Key);
     }
 }
