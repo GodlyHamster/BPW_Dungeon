@@ -39,7 +39,6 @@ public class EntityTurnManager : MonoBehaviour
     private void CompletedAction()
     {
         if (_activeTurn == false || _completedTurn == true) return;
-        print(gameObject.name + " has taken its turn");
         _completedTurn = true;
         _activeTurn = false;
     }

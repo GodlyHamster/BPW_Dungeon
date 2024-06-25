@@ -17,6 +17,7 @@ public class Movement : MonoBehaviour, ITurnComponent
 
     private void Start()
     {
+        DungeonGrid.instance.AddEntityToGrid(gameObject, Vector2Int.zero);
         transform.position = _gridMovement.SetPos(_gridMovement.GridPosition);
     }
 
@@ -46,6 +47,10 @@ public class Movement : MonoBehaviour, ITurnComponent
             TurnCompleteInvoker.Invoke();
         }
 
-        transform.position = _gridMovement.SetPos(_gridMovement.GridPosition + newMoveValue);
+        if (newMoveValue != Vector2Int.zero)
+        {
+            //transform.position = _gridMovement.SetPos(_gridMovement.GridPosition + newMoveValue);
+            transform.position = DungeonGrid.instance.SetPos(gameObject, DungeonGrid.instance.GetPos(gameObject) + newMoveValue);
+        }
     }
 }

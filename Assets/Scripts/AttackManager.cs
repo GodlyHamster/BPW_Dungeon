@@ -43,7 +43,6 @@ public class AttackManager : MonoBehaviour
 
     private void UpdateAttackSpaces()
     {
-        print(_attacks.Count);
         if (_attacks.Count == 0) return;
         int attacksToClear = _attacks.Count;
         for (int i = 0; i < attacksToClear; i++)

@@ -43,7 +43,6 @@ public class TurnManager : MonoBehaviour
         {
             //start entities turn and wait until completed
             turnEntity.SetActiveTurn(true);
-            print("waiting for " + turnEntity.gameObject.name + " to take turn...");
             yield return new WaitUntil(() => turnEntity.completedTurn == true);
         }
         yield return null;
