@@ -26,6 +26,11 @@ public class DungeonGrid : MonoBehaviour
     {
         return _entitiesOnGrid[obj];
     }
+
+    public bool GridContainsObject(Vector2Int pos)
+    {
+        return _entitiesOnGrid.KeyFromValue(pos) != null;
+    }
     
     public Vector3 SetPos(GameObject obj, Vector2Int position)
     {

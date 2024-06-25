@@ -11,11 +11,8 @@ public class EnemyBase : MonoBehaviour, ITurnComponent
 
     private EntityTurnManager _entityTurnManager;
 
-    protected GridMovement gridmovement;
-
     private void Awake()
     {
-        gridmovement = GetComponent<GridMovement>();
         _entityTurnManager = GetComponent<EntityTurnManager>();
         _entityTurnManager.OnStartTurn.AddListener(DoAction);
         Dungeon.instance.OnRoomLoaded.AddListener(SetStartLocation);
@@ -23,7 +20,8 @@ public class EnemyBase : MonoBehaviour, ITurnComponent
 
     private void SetStartLocation()
     {
-        transform.position = gridmovement.SetPos(enemyData.position);
+        DungeonGrid.instance.AddEntityToGrid(gameObject, enemyData.position);
+        transform.position = DungeonGrid.instance.SetPos(gameObject, enemyData.position);
     }
 
     private void DoAction()
@@ -34,7 +32,8 @@ public class EnemyBase : MonoBehaviour, ITurnComponent
     protected virtual IEnumerator ExecuteAction()
     {
         yield return new WaitForSeconds(1);
-        transform.position = gridmovement.SetPos(gridmovement.GridPosition + Direction2D.GetRandomDirection());
+        Vector2Int newPos = DungeonGrid.instance.GetPos(gameObject) + Direction2D.GetRandomDirection();
+        transform.position = DungeonGrid.instance.SetPos(gameObject, newPos);
         TurnCompleteInvoker.Invoke();
     }
 }
