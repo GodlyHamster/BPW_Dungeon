@@ -20,7 +20,7 @@ public class AttackManager : MonoBehaviour
     private void Start()
     {
         TurnManager.instance.OnRoundEnd.AddListener(UpdateAttackSpaces);
-        Dungeon.instance.OnRoomLoaded.AddListener(ClearAllAttacks);
+        Dungeon.instance.OnRoomLoaded.AddListener(delegate { ClearAllAttacks(true); });
     }
 
     public bool AddAttack(Attack attack)
@@ -31,20 +31,35 @@ public class AttackManager : MonoBehaviour
         return true;
     }
 
-    private void ClearAllAttacks()
+    private void ClearAllAttacks(bool clearActive)
     {
         if (_attacks.Count == 0) return;
         int attacksToClear = _attacks.Count - 1;
         for (int i = attacksToClear; i >= 0; i--)
         {
+            if (!clearActive && _attacks.ElementAt(i).Key.executesInTurns >= 0) continue;
             Destroy(_attacks.ElementAt(i).Value);
             _attacks.RemoveAt(i);
         }
-        _attacks.Clear();
+        if (clearActive) _attacks.Clear();
     }
 
     private void UpdateAttackSpaces()
     {
-        //TODO update spaces
+        if (_attacks.Count == 0) return;
+        foreach (KeyValuePair<Attack, GameObject> item in _attacks)
+        {
+            Attack currentAttack = item.Key;
+            if (currentAttack.executesInTurns <= 0 && DungeonGrid.instance.GridContainsObject(currentAttack.position))
+            {
+                GameObject entityInPos = DungeonGrid.instance.GetObjectFromPos(currentAttack.position);
+                if (entityInPos.TryGetComponent<Health>(out Health hp))
+                {
+                    hp.TakeDamage(currentAttack.damage);
+                }
+            }
+            currentAttack.executesInTurns -= 1;
+        }
+        ClearAllAttacks(false);
     }
 }

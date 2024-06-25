@@ -17,7 +17,10 @@ public class Health : MonoBehaviour
     {
         _health -= damage;
         OnDamageTaken.Invoke();
-        if (_health <= 0 ) OnDeath.Invoke();
+        if (_health <= 0)
+        {
+            OnDeath.Invoke();
+        }
     }
 
     public void Heal(int healAmount)

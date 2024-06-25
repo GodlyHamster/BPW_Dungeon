@@ -34,7 +34,9 @@ public class PlayerHealthRenderer : MonoBehaviour
             }
             else if (newSegments < 0)
             {
+                if (_healthSegments.Count <= 0) continue;
                 Destroy(_healthSegments.Last());
+                _healthSegments.RemoveLast();
             }
         }
     }
