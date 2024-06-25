@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class AttackManager : MonoBehaviour
 {
@@ -39,9 +40,11 @@ public class AttackManager : MonoBehaviour
         if (_attacks.ContainsKey(attack)) return false;
         AttackScriptableObject attackToAdd = Instantiate(attack);
         _attacks.Add(attackToAdd, new List<GameObject>());
-        foreach (Vector2Int pos in attack.positions)
+        for (int i = 0; i < attack.positions.Length; i++)
         {
-            _attacks[attackToAdd].Add(Instantiate(_attackPreview, new Vector3(pos.x + addition.x, pos.y + addition.y), Quaternion.identity));
+            Vector2Int newPos = attack.positions[i] + addition;
+            attackToAdd.positions[i] = newPos;
+            _attacks[attackToAdd].Add(Instantiate(_attackPreview, new Vector3(newPos.x, newPos.y), Quaternion.identity));
         }
         return true;
     }
