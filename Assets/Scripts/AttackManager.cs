@@ -9,8 +9,7 @@ public class AttackManager : MonoBehaviour
     [SerializeField]
     private GameObject _attackPreview;
 
-    //perhaps change it to a Vector2Int that is connected to a valuepair <Attack, GameObject>
-    private Dictionary<Attack, GameObject> _attacks = new Dictionary<Attack, GameObject>();
+    private Dictionary<AttackScriptableObject, List<GameObject>> _attacks = new Dictionary<AttackScriptableObject, List<GameObject>>();
 
     private void Awake()
     {
@@ -23,11 +22,27 @@ public class AttackManager : MonoBehaviour
         Dungeon.instance.OnRoomLoaded.AddListener(delegate { ClearAllAttacks(true); });
     }
 
-    public bool AddAttack(Attack attack)
+    public bool AddAttack(AttackScriptableObject attack)
     {
         if (_attacks.ContainsKey(attack)) return false;
-        GameObject newAttackObj = Instantiate(_attackPreview, new Vector3(attack.position.x, attack.position.y), Quaternion.identity);
-        _attacks.Add(attack, newAttackObj);
+        AttackScriptableObject attackToAdd = Instantiate(attack);
+        _attacks.Add(attackToAdd, new List<GameObject>());
+        foreach (Vector2Int pos in attack.positions)
+        {
+            _attacks[attackToAdd].Add(Instantiate(_attackPreview, new Vector3(pos.x, pos.y), Quaternion.identity));
+        }
+        return true;
+    }
+
+    public bool AddAttackAtPos(AttackScriptableObject attack, Vector2Int addition)
+    {
+        if (_attacks.ContainsKey(attack)) return false;
+        AttackScriptableObject attackToAdd = Instantiate(attack);
+        _attacks.Add(attackToAdd, new List<GameObject>());
+        foreach (Vector2Int pos in attack.positions)
+        {
+            _attacks[attackToAdd].Add(Instantiate(_attackPreview, new Vector3(pos.x + addition.x, pos.y + addition.y), Quaternion.identity));
+        }
         return true;
     }
 
@@ -38,7 +53,10 @@ public class AttackManager : MonoBehaviour
         for (int i = attacksToClear; i >= 0; i--)
         {
             if (!clearActive && _attacks.ElementAt(i).Key.executesInTurns >= 0) continue;
-            Destroy(_attacks.ElementAt(i).Value);
+            foreach (var obj in _attacks.ElementAt(i).Value)
+            {
+                Destroy(obj);
+            }
             _attacks.RemoveAt(i);
         }
         if (clearActive) _attacks.Clear();
@@ -47,15 +65,19 @@ public class AttackManager : MonoBehaviour
     private void UpdateAttackSpaces()
     {
         if (_attacks.Count == 0) return;
-        foreach (KeyValuePair<Attack, GameObject> item in _attacks)
+        foreach (KeyValuePair<AttackScriptableObject, List<GameObject>> item in _attacks)
         {
-            Attack currentAttack = item.Key;
-            if (currentAttack.executesInTurns <= 0 && DungeonGrid.instance.GridContainsObject(currentAttack.position))
+            AttackScriptableObject currentAttack = item.Key;
+            if (currentAttack.executesInTurns <= 0)
             {
-                GameObject entityInPos = DungeonGrid.instance.GetObjectFromPos(currentAttack.position);
-                if (entityInPos.TryGetComponent<Health>(out Health hp))
+                foreach (var pos in currentAttack.positions)
                 {
-                    hp.TakeDamage(currentAttack.damage);
+                    GameObject entityInPos = DungeonGrid.instance.GetObjectFromPos(pos);
+                    if (entityInPos == null) continue;
+                    if (entityInPos.TryGetComponent<Health>(out Health hp))
+                    {
+                        hp.TakeDamage(currentAttack.damage);
+                    }
                 }
             }
             currentAttack.executesInTurns -= 1;

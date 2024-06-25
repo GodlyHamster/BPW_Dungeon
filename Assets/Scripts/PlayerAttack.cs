@@ -6,6 +6,9 @@ public class PlayerAttack : MonoBehaviour, ITurnComponent
     private UnityEvent TurnCompleteInvoker = new UnityEvent();
     public UnityEvent OnTurnComplete { get { return TurnCompleteInvoker; } }
 
+    [SerializeField]
+    private AttackScriptableObject _attack;
+
     private EntityTurnManager _entityTurnManager;
 
     private void Awake()
@@ -20,7 +23,7 @@ public class PlayerAttack : MonoBehaviour, ITurnComponent
         if (Input.GetKeyDown(KeyCode.E))
         {
             Vector2Int currentPos = DungeonGrid.instance.GetPos(gameObject);
-            AttackManager.instance.AddAttack(new Attack(1, currentPos + new Vector2Int(1, 0), 1));
+            AttackManager.instance.AddAttackAtPos(_attack, currentPos);
             TurnCompleteInvoker.Invoke();
         }
     }

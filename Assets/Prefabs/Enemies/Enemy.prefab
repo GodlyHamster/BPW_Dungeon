@@ -132,6 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dd2149b405796947bbcc35acc9c6eda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _turnPriority: 3
   OnStartTurn:
     m_PersistentCalls:
       m_Calls: []

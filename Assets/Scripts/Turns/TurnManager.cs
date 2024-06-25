@@ -33,6 +33,7 @@ public class TurnManager : MonoBehaviour
     {
         yield return new WaitUntil(() => _entityTurnManagers.Count == 0);
         _entityTurnManagers = FindObjectsOfType<EntityTurnManager>().ToList();
+        _entityTurnManagers = _entityTurnManagers.OrderByDescending(etm => etm.turnPriority).ToList();
         StartCoroutine(StartNextRound());
         yield return null;
     }

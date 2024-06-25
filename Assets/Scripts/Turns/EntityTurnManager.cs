@@ -4,6 +4,10 @@ using UnityEngine.Events;
 
 public class EntityTurnManager : MonoBehaviour
 {
+    [SerializeField]
+    private int _turnPriority;
+    public int turnPriority { get { return _turnPriority; } }
+
     private List<ITurnComponent> _turnComponents = new List<ITurnComponent>();
 
     private bool _activeTurn = false;
