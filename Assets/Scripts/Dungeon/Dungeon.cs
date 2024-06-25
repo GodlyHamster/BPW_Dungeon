@@ -194,7 +194,7 @@ public class Dungeon : MonoBehaviour
     {
         if (_enemiesInRoom.Contains(enemy))
         {
-            TurnManager.instance.ClearEntity(enemy.GetComponent<EntityTurnManager>());
+            TurnManager.instance.RemoveEntity(enemy.GetComponent<EntityTurnManager>());
             Destroy(enemy);
             _enemiesInRoom.Remove(enemy);
         }
