@@ -11,11 +11,16 @@ public class EnemyBase : MonoBehaviour, ITurnComponent
 
     private EntityTurnManager _entityTurnManager;
 
+    private Health _health;
+
     private void Awake()
     {
         _entityTurnManager = GetComponent<EntityTurnManager>();
+        _health = GetComponent<Health>();
+
         _entityTurnManager.OnStartTurn.AddListener(DoAction);
         Dungeon.instance.OnRoomLoaded.AddListener(SetStartLocation);
+        _health.OnDeath.AddListener(delegate { Dungeon.instance.RemoveEnemy(gameObject); });
     }
 
     private void SetStartLocation()

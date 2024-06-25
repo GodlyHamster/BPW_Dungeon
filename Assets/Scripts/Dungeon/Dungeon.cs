@@ -190,6 +190,16 @@ public class Dungeon : MonoBehaviour
         TurnManager.instance.ClearEntities();
     }
 
+    public void RemoveEnemy(GameObject enemy)
+    {
+        if (_enemiesInRoom.Contains(enemy))
+        {
+            TurnManager.instance.ClearEntity(enemy.GetComponent<EntityTurnManager>());
+            Destroy(enemy);
+            _enemiesInRoom.Remove(enemy);
+        }
+    }
+
     public RoomScriptableObject GetRoomFromPosition(Vector2Int pos)
     {
         foreach(RoomScriptableObject room in _rooms)

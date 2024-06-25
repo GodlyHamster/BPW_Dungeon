@@ -18,6 +18,11 @@ public class TurnManager : MonoBehaviour
         Dungeon.instance.OnRoomLoaded.AddListener(GetEntitiesAndStart);
     }
 
+    public void ClearEntity(EntityTurnManager entity)
+    {
+        _entityTurnManagers.Remove(entity);
+    }
+
     public void ClearEntities()
     {
         StopAllCoroutines();
