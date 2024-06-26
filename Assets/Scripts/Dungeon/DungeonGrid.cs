@@ -14,6 +14,7 @@ public class DungeonGrid : MonoBehaviour
 
     public void AddEntityToGrid(GameObject obj, Vector2Int pos)
     {
+        if (_entitiesOnGrid.ContainsKey(obj)) return;
         _entitiesOnGrid.Add(obj, pos);
     }
 

@@ -20,7 +20,14 @@ public class EnemyBase : MonoBehaviour, ITurnComponent
 
         _entityTurnManager.OnStartTurn.AddListener(DoAction);
         Dungeon.instance.OnRoomLoaded.AddListener(SetStartLocation);
-        _health.OnDeath.AddListener(delegate { Dungeon.instance.RemoveEnemy(gameObject); });
+        _health.OnDeath.AddListener(delegate { Dungeon.instance.RemoveEnemy(this); });
+    }
+
+    private void OnDestroy()
+    {
+        Dungeon.instance.RemoveEnemy(this);
+        DungeonGrid.instance.RemoveEntityFromGrid(this.gameObject);
+        TurnManager.instance.RemoveEntity(_entityTurnManager);
     }
 
     private void SetStartLocation()

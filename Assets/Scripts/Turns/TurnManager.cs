@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -34,6 +35,19 @@ public class TurnManager : MonoBehaviour
         StartCoroutine(GatherEntitiesAndStart());
     }
 
+    private bool RemoveAllEmpty()
+    {
+        for (int i = 0; i < _entityTurnManagers.Count; i++)
+        {
+            if (_entityTurnManagers[i] == null)
+            {
+                print("removed emtpy");
+                _entityTurnManagers.RemoveAt(i);
+            }
+        }
+        return true;
+    }
+
     private IEnumerator GatherEntitiesAndStart()
     {
         yield return new WaitUntil(() => _entityTurnManagers.Count == 0);
@@ -64,6 +78,7 @@ public class TurnManager : MonoBehaviour
             turnEntity.ResetTurn();
         }
         //restart the round
+        yield return new WaitUntil(() => RemoveAllEmpty());
         StartCoroutine(Round());
         yield return null;
     }

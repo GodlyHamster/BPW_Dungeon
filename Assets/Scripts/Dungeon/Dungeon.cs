@@ -29,7 +29,7 @@ public class Dungeon : MonoBehaviour
 
     private RoomScriptableObject _loadedRoom;
     private GameObject _loadedRoomObject;
-    private List<GameObject> _enemiesInRoom = new List<GameObject>();
+    private List<EnemyBase> _enemiesInRoom = new List<EnemyBase>();
 
     private List<Vector2Int> _roomPositions = new List<Vector2Int>();
 
@@ -168,7 +168,7 @@ public class Dungeon : MonoBehaviour
                 GameObject enemyObj = Instantiate(enemyData.prefab, enemyPos, Quaternion.identity);
                 EnemyBase enemy = enemyObj.GetComponent(typeof(EnemyBase)) as EnemyBase;
                 enemy.enemyData = enemyData;
-                _enemiesInRoom.Add(enemyObj);
+                _enemiesInRoom.Add(enemy);
             }
         }
         OnRoomLoaded.Invoke();
@@ -184,19 +184,19 @@ public class Dungeon : MonoBehaviour
         int enemyAmount = _enemiesInRoom.Count;
         for (int i = 0; i < enemyAmount; i++)
         {
-            Destroy(_enemiesInRoom[i]);
+            Destroy(_enemiesInRoom[i].gameObject);
         }
         _enemiesInRoom.Clear();
         TurnManager.instance.ClearEntities();
     }
 
-    public void RemoveEnemy(GameObject enemy)
+    public void RemoveEnemy(EnemyBase enemy)
     {
         if (_enemiesInRoom.Contains(enemy))
         {
-            TurnManager.instance.RemoveEntity(enemy.GetComponent<EntityTurnManager>());
-            Destroy(enemy);
-            _enemiesInRoom.Remove(enemy);
+            int index = _enemiesInRoom.IndexOf(enemy);
+            Destroy(enemy.gameObject);
+            _enemiesInRoom.RemoveAt(index);
         }
     }
 
