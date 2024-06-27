@@ -4,14 +4,19 @@ using UnityEngine.Events;
 
 public class EnemyBase : MonoBehaviour, ITurnComponent
 {
-    private UnityEvent TurnCompleteInvoker = new UnityEvent();
+    protected UnityEvent TurnCompleteInvoker = new UnityEvent();
     public UnityEvent OnTurnComplete { get { return TurnCompleteInvoker; } }
+
+    [SerializeField]
+    protected AttackScriptableObject _attack;
 
     public EnemyData enemyData;
 
     private EntityTurnManager _entityTurnManager;
 
     private Health _health;
+
+    protected GameObject _player;
 
     private void Awake()
     {
@@ -21,6 +26,11 @@ public class EnemyBase : MonoBehaviour, ITurnComponent
         _entityTurnManager.OnStartTurn.AddListener(DoAction);
         Dungeon.instance.OnRoomLoaded.AddListener(SetStartLocation);
         _health.OnDeath.AddListener(delegate { Dungeon.instance.RemoveEnemy(this); });
+    }
+
+    private void Start()
+    {
+        _player = GameObject.FindGameObjectWithTag("Player");
     }
 
     private void OnDestroy()

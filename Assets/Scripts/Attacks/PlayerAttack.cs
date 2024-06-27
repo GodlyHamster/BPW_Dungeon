@@ -56,6 +56,5 @@ public class PlayerAttack : MonoBehaviour, ITurnComponent
                 return AttackRotation.NONE;
 
         }
-
     }
 }

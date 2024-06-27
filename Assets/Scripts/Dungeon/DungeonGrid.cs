@@ -33,26 +33,54 @@ public class DungeonGrid : MonoBehaviour
         return _entitiesOnGrid.KeyFromValue(pos);
     }
 
-    public bool GridContainsObject(Vector2Int pos)
+    public bool GridContainsObjectAt(Vector2Int pos)
     {
         return _entitiesOnGrid.KeyFromValue(pos) != null;
     }
     
-    public Vector3 SetPos(GameObject obj, Vector2Int position)
+    public Vector3 SetPos(GameObject thisObj, Vector2Int position)
     {
         RaycastHit2D hit = Physics2D.Raycast(position, Vector2.zero);
-        Vector2Int currentPos = _entitiesOnGrid[obj];
+        Vector2Int currentPos = _entitiesOnGrid[thisObj];
         if (hit.collider == null)
         {
-            _entitiesOnGrid[obj] = position;
+            _entitiesOnGrid[thisObj] = position;
             return new Vector3(position.x, position.y, 0);
         }
-        if (hit.collider.gameObject.tag == "Door" && obj.tag == "Player")
+        if (hit.collider.gameObject.tag == "Door" && thisObj.tag == "Player")
         {
-            _entitiesOnGrid[obj] = new Vector2Int(-currentPos.x, -currentPos.y);
+            _entitiesOnGrid[thisObj] = new Vector2Int(-currentPos.x, -currentPos.y);
             Door door = hit.collider.gameObject.GetComponent<Door>();
             Dungeon.instance.LoadRoom(door.linksToRoom);
         }
-        return new Vector3(_entitiesOnGrid[obj].x, _entitiesOnGrid[obj].y, 0);
+        return new Vector3(_entitiesOnGrid[thisObj].x, _entitiesOnGrid[thisObj].y, 0);
+    }
+
+    public Vector3 MoveTowards(GameObject thisObj, Vector2Int destination)
+    {
+        Vector2Int currentPos = _entitiesOnGrid[thisObj];
+        if (currentPos.x < destination.x)
+        {
+            return (SetPos(thisObj, currentPos + Vector2Int.right));
+        }
+        else if (currentPos.x > destination.x)
+        {
+            return (SetPos(thisObj, currentPos + Vector2Int.left));
+        }
+        else if (currentPos.y < destination.y)
+        {
+            return (SetPos(thisObj, currentPos + Vector2Int.up));
+        }
+        else if (currentPos.y > destination.y)
+        {
+            return (SetPos(thisObj, currentPos + Vector2Int.down));
+        }
+        return new Vector3(currentPos.x, currentPos.y);
+    }
+
+    public int Distance(GameObject thisObject, Vector2Int pos)
+    {
+        int distance = Mathf.Abs(_entitiesOnGrid[thisObject].x - pos.x) + Mathf.Abs(_entitiesOnGrid[thisObject].y - pos.y);
+        return distance;
     }
 }

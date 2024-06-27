@@ -44,7 +44,7 @@ public class Movement : MonoBehaviour, ITurnComponent
         if (newMoveValue != Vector2Int.zero)
         {
             Vector2Int newPos = DungeonGrid.instance.GetPos(gameObject) + newMoveValue;
-            if (!DungeonGrid.instance.GridContainsObject(newPos))
+            if (!DungeonGrid.instance.GridContainsObjectAt(newPos))
             {
                 transform.position = DungeonGrid.instance.SetPos(gameObject, newPos);
                 TurnCompleteInvoker.Invoke();
