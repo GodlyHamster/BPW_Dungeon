@@ -7,9 +7,14 @@ public class GameMenuManager : MonoBehaviour
     public static GameMenuManager instance;
 
     public static bool gameIsPaused = false;
+    public static bool playerIsDead = false;
 
     [SerializeField]
     private GameObject _pauseMenuObject;
+    [SerializeField]
+    private GameObject _deathMenu;
+    [SerializeField]
+    private Health _playerHealth;
 
     [SerializeField]
     private Button _continueButton;
@@ -21,6 +26,8 @@ public class GameMenuManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        gameIsPaused = false;
+        playerIsDead = false;
     }
 
     private void Start()
@@ -28,39 +35,42 @@ public class GameMenuManager : MonoBehaviour
         _continueButton.onClick.AddListener(() =>
         {
             gameIsPaused = false;
-            UpdatePauseMenu();
+            UpdateMenuItems();
         });
         _mainMenuButton.onClick.AddListener(MainMenu);
         _exitButton.onClick.AddListener(ExitGame);
-        UpdatePauseMenu();
+        _playerHealth.OnDeath.AddListener(() =>
+        {
+            playerIsDead = true;
+            UpdateMenuItems();
+        });
+        UpdateMenuItems();
     }
 
     private void Update()
     {
+        if (playerIsDead) return;
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             gameIsPaused = !gameIsPaused;
-            UpdatePauseMenu();
+            UpdateMenuItems();
         }
     }
 
-    private void UpdatePauseMenu()
+    private void UpdateMenuItems()
     {
-        if (gameIsPaused)
-        {
-            _pauseMenuObject.SetActive(true);
-            Time.timeScale = 0f;
-        }
-        else
-        {
-            _pauseMenuObject.SetActive(false);
-            Time.timeScale = 1f;
-        }
+        _deathMenu.SetActive(playerIsDead);
+        _pauseMenuObject.SetActive(gameIsPaused && !playerIsDead);
+
+        _continueButton.gameObject.SetActive(gameIsPaused);
+        _mainMenuButton.gameObject.SetActive(playerIsDead || gameIsPaused);
+        _exitButton.gameObject.SetActive(playerIsDead || gameIsPaused);
+
+        Time.timeScale = playerIsDead || gameIsPaused ? 0f : 1f;
     }
 
     private void MainMenu()
     {
-        gameIsPaused = false;
         SceneManager.LoadScene("MainMenu");
     }
 
