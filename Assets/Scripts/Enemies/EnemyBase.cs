@@ -30,6 +30,12 @@ public class EnemyBase : MonoBehaviour, ITurnComponent
         TurnManager.instance.RemoveEntity(_entityTurnManager);
     }
 
+    public EnemyData GetData()
+    {
+        enemyData.position = DungeonGrid.instance.GetPos(this.gameObject);
+        return enemyData;
+    }
+
     private void SetStartLocation()
     {
         DungeonGrid.instance.AddEntityToGrid(gameObject, enemyData.position);

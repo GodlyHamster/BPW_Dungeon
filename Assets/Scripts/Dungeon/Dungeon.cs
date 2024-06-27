@@ -130,7 +130,7 @@ public class Dungeon : MonoBehaviour
     {
         if (_loadedRoomObject != null)
         {
-            UnloadRoom();
+            SaveAndUnloadRoom();
         }
         //instantiate room and set correct room data
         _loadedRoom = GetRoomFromPosition(roomPos);
@@ -165,7 +165,7 @@ public class Dungeon : MonoBehaviour
             foreach (EnemyData enemyData in _loadedRoom.enemies)
             {
                 Vector3 enemyPos = new Vector3(enemyData.position.x, enemyData.position.y, 0);
-                GameObject enemyObj = Instantiate(enemyData.prefab, enemyPos, Quaternion.identity);
+                GameObject enemyObj = Instantiate(enemyData.prefab, enemyPos, Quaternion.identity, _loadedRoomObject.transform);
                 EnemyBase enemy = enemyObj.GetComponent(typeof(EnemyBase)) as EnemyBase;
                 enemy.enemyData = enemyData;
                 _enemiesInRoom.Add(enemy);
@@ -174,18 +174,23 @@ public class Dungeon : MonoBehaviour
         OnRoomLoaded.Invoke();
     }
 
-    public void UnloadRoom()
+    public void SaveAndUnloadRoom()
     {
+        //save data
+        _loadedRoom.enemies.Clear();
+        foreach (EnemyBase enemy in _enemiesInRoom)
+        {
+            _loadedRoom.enemies.Add(enemy.GetData());
+        }
+
+        int roomIndex = _rooms.IndexOf(GetRoomFromPosition(_loadedRoom.roomPosition));
+        _rooms[roomIndex] = _loadedRoom;
+
+        //unload all
         Destroy(_loadedRoomObject);
         _loadedRoomObject = null;
         _loadedRoom = null;
 
-        //clear all entities from room
-        int enemyAmount = _enemiesInRoom.Count;
-        for (int i = 0; i < enemyAmount; i++)
-        {
-            Destroy(_enemiesInRoom[i].gameObject);
-        }
         _enemiesInRoom.Clear();
         TurnManager.instance.ClearEntities();
     }
