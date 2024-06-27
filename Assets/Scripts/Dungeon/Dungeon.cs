@@ -23,7 +23,7 @@ public class Dungeon : MonoBehaviour
     [SerializeField]
     private GameObject _doorPrefab;
     [SerializeField]
-    private GameObject _enemyPrefab;
+    private List<GameObject> _enemyPrefabs;
 
     private List<RoomScriptableObject> _rooms = new List<RoomScriptableObject>();
 
@@ -96,7 +96,7 @@ public class Dungeon : MonoBehaviour
             if (room.roomType == RoomType.ENEMY)
             {
                 Vector2Int randomPos = room.possibleEnemySpawns.RandomItem();
-                room.enemies.Add(new EnemyData(_enemyPrefab, randomPos));
+                room.enemies.Add(new EnemyData(_enemyPrefabs.RandomItem(), randomPos));
             }
         }
 
