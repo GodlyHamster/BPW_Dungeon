@@ -51,6 +51,7 @@ public class DungeonGrid : MonoBehaviour
         {
             _entitiesOnGrid[thisObj] = new Vector2Int(-currentPos.x, -currentPos.y);
             Door door = hit.collider.gameObject.GetComponent<Door>();
+            door.OnDoorEnter.Invoke();
             Dungeon.instance.LoadRoom(door.linksToRoom);
         }
         return new Vector3(_entitiesOnGrid[thisObj].x, _entitiesOnGrid[thisObj].y, 0);
