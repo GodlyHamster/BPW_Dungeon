@@ -18,12 +18,16 @@ public class Dungeon : MonoBehaviour
     private RoomScriptableObject _emptyRoom;
     [SerializeField]
     private RoomScriptableObject _enemyRoom;
+    [SerializeField]
+    private RoomScriptableObject _bossRoom;
 
     [Header("Room Objects")]
     [SerializeField]
     private GameObject _doorPrefab;
     [SerializeField]
     private List<GameObject> _enemyPrefabs;
+    [SerializeField]
+    private List<GameObject> _bossPrefabs;
 
     private List<RoomScriptableObject> _rooms = new List<RoomScriptableObject>();
 
@@ -98,6 +102,13 @@ public class Dungeon : MonoBehaviour
                 Vector2Int randomPos = room.possibleEnemySpawns.RandomItem();
                 room.enemies.Add(new EnemyData(_enemyPrefabs.RandomItem(), randomPos));
             }
+            else if (room.roomType == RoomType.BOSS)
+            {
+                print("spawn boss");
+                Vector2Int randomPos = room.possibleEnemySpawns.RandomItem();
+                room.enemies.Add(new EnemyData(_bossPrefabs.RandomItem(), randomPos));
+                print("boss spawned?");
+            }
         }
 
         LoadRoom(_roomPositions[0]);
@@ -111,6 +122,10 @@ public class Dungeon : MonoBehaviour
         if (pos == Vector2Int.zero)
         {
             rso = Instantiate(_tutorialRoom);
+        }
+        else if (_roomPositions.Count == _roomAmount - 1)
+        {
+            rso = Instantiate(_bossRoom);
         }
         else if (Random.Range(0, 2) == 1)
         {
@@ -160,7 +175,7 @@ public class Dungeon : MonoBehaviour
         }
 
         //load enemies
-        if (_loadedRoom.roomType == RoomType.ENEMY)
+        if (_loadedRoom.roomType == RoomType.ENEMY || _loadedRoom.roomType == RoomType.BOSS)
         {
             foreach (EnemyData enemyData in _loadedRoom.enemies)
             {
@@ -229,6 +244,10 @@ public class Dungeon : MonoBehaviour
                 else if (GetRoomFromPosition(pos).roomType == RoomType.ENEMY)
                 {
                     Gizmos.color = Color.red;
+                }
+                else if (GetRoomFromPosition(pos).roomType == RoomType.BOSS)
+                {
+                    Gizmos.color = Color.black;
                 }
                 else
                 {

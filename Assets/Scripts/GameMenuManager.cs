@@ -9,10 +9,27 @@ public class GameMenuManager : MonoBehaviour
     public static bool gameIsPaused = false;
     public static bool playerIsDead = false;
 
+    private bool _defeatedBoss = false;
+    public bool defeatedBoss
+    {
+        get
+        {
+            return _defeatedBoss;
+        }
+        set
+        {
+            _defeatedBoss = value;
+            UpdateMenuItems();
+        }
+    }
+
     [SerializeField]
     private GameObject _pauseMenuObject;
     [SerializeField]
     private GameObject _deathMenu;
+    [SerializeField]
+    private GameObject _winMenu;
+
     [SerializeField]
     private Health _playerHealth;
 
@@ -28,6 +45,7 @@ public class GameMenuManager : MonoBehaviour
         instance = this;
         gameIsPaused = false;
         playerIsDead = false;
+        _defeatedBoss = false;
     }
 
     private void Start()
@@ -61,10 +79,11 @@ public class GameMenuManager : MonoBehaviour
     {
         _deathMenu.SetActive(playerIsDead);
         _pauseMenuObject.SetActive(gameIsPaused && !playerIsDead);
+        _winMenu.SetActive(_defeatedBoss);
 
         _continueButton.gameObject.SetActive(gameIsPaused);
-        _mainMenuButton.gameObject.SetActive(playerIsDead || gameIsPaused);
-        _exitButton.gameObject.SetActive(playerIsDead || gameIsPaused);
+        _mainMenuButton.gameObject.SetActive(playerIsDead || gameIsPaused || _defeatedBoss);
+        _exitButton.gameObject.SetActive(playerIsDead || gameIsPaused || _defeatedBoss);
 
         Time.timeScale = playerIsDead || gameIsPaused ? 0f : 1f;
     }

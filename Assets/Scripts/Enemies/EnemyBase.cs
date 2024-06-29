@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,7 +9,7 @@ public class EnemyBase : MonoBehaviour, ITurnComponent
     public UnityEvent OnTurnComplete { get { return TurnCompleteInvoker; } }
 
     [SerializeField]
-    protected AttackScriptableObject _attack;
+    protected List<AttackScriptableObject> _attacks;
 
     public EnemyData enemyData;
 

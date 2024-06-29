@@ -17,8 +17,7 @@ public class SpinEnemy : EnemyBase
         }
         else
         {
-            print("attack player");
-            AttackScriptableObject currentAttack = Instantiate(_attack);
+            AttackScriptableObject currentAttack = Instantiate(_attacks.RandomItem());
             currentAttack.AttackTowards(currentPos, playerPos);
             AttackManager.instance.AddAttackAtPos(currentAttack, currentPos);
         }
