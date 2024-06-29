@@ -104,10 +104,8 @@ public class Dungeon : MonoBehaviour
             }
             else if (room.roomType == RoomType.BOSS)
             {
-                print("spawn boss");
                 Vector2Int randomPos = room.possibleEnemySpawns.RandomItem();
                 room.enemies.Add(new EnemyData(_bossPrefabs.RandomItem(), randomPos));
-                print("boss spawned?");
             }
         }
 
